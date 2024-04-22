@@ -139,9 +139,9 @@ class TransaksiController extends Controller
         //if(!$jumlah) return back()->with("error", "Parameter tidak lengkap (jumlah)");
         if(!$mitra) return back()->with("error", "Parameter tidak lengkap (mitra)");
         if(!$keterangan) return back()->with("error", "Parameter tidak lengkap (keterangan)");
-        if($this->type == "out"){
-            $jumlah = "-" . $jumlah;
-        }
+        // if($this->type == "out"){
+        //     $jumlah = "-" . $jumlah;
+        // }
 
         $trx = Transaksi::find($id);
         if(!$trx){
