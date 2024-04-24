@@ -42,6 +42,7 @@
                         @endphp
                         @foreach($cashflow as $k => $v)
                             @php
+                                $v->jumlah = $v->jumlah * -1;
                                 $total += $v->harga * $v->jumlah;
                                 $cls = "primary";
                                 if($v->jumlah > 0){
