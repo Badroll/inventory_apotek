@@ -11,7 +11,22 @@ class Barang extends Model
         'kategori_id',
         'nama',
         'keterangan',
-        'stok',
+        'stok_minimum',
+        'satuan',
+        'expired',
     ];
     public $timestamps = false;
+
+    public function kategori(){
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    public function transaksiItem(){
+        return $this->hasMany(TransaksiItem::class);
+    }
+
+    public function getStok(){
+        return $this->transaksiItem()->sum('jumlah');
+    }
+
 }

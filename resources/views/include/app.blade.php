@@ -47,6 +47,14 @@
 								<span class="hide-menu">Obat</span>
 								</a>
 							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ url('kontak') }}" aria-expanded="false">
+								<span>
+								<i class="ti ti-address-book"></i>
+								</span>
+								<span class="hide-menu">Kontak</span>
+								</a>
+							</li>
 							<li class="nav-small-cap">
 								<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
 								<span class="hide-menu">TRANSAKSI</span>
@@ -142,16 +150,19 @@
 							@if(Session::get("info"))
 								<div class="alert alert-primary" role="alert">
 									{{Session::get("info")}}
+									@php Session::forget("info") @endphp
 								</div>
 							@endif
 							@if(Session::get("success"))
 								<div class="alert alert-success" role="alert">
 									{{Session::get("success")}}
+									@php Session::forget("success") @endphp
 								</div>
 							@endif
 							@if(Session::get("error"))
 								<div class="alert alert-danger" role="alert">
 									{{Session::get("error")}}
+									@php Session::forget("error") @endphp
 								</div>
 							@endif
 							@yield('content')

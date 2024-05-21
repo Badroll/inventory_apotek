@@ -38,30 +38,31 @@
                     </thead>
                     <tbody>
                         @php
-                            $total = 0;
+                            $grandTotal = 0;
                         @endphp
                         @foreach($cashflow as $k => $v)
                             @php
-                                $v->jumlah = $v->jumlah * -1;
-                                $total += $v->harga * $v->jumlah;
+                                $total = $v->harga * $v->jumlah;
                                 $cls = "primary";
-                                if($v->jumlah > 0){
+                                $multiplier = -1;
+                                if($v->jenis == "Penjualan"){
                                     $cls = "success";
+                                    $multiplier = 1;
                                 }
+                                $grandTotal += $total * $multiplier;
                             @endphp
                             <tr class="alert alert-{{$cls}}">
                                 <td>{!! str_replace(" ", " ", tglIndo($v->tanggal, "SHORT")) !!}</td>
                                 <td><b>{{ $v->barang_nama }}</b><br>{{ $v->kategori_nama }}</td>
-                                <!-- <td><b>#{{ $v->kode }}</b><br>{{ $v->mitra }}</td> -->
-                                <td>{{ $v->jumlah }}</td>
+                                <td>{{ $v->jumlah }} ({{ $cls == "success" ? "+" : "-" }})</td>
                                 <td>{{ idr($v->harga) }}</td>
-                                <td><b>{{ idr($v->harga * $v->jumlah) }}</b></td>
+                                <td><b>{{ idr($total) }} ({{ $cls == "success" ? "+" : "-" }})</b></td>
                             </tr>
                         @endforeach
                         <tr class="">
                             <td colspan="3"></td>
                             <td><b></b></td>
-                            <td><h5>{{ idr($total) }}</h5></td>
+                            <td><h5 @if($grandTotal < 0)  @endif>{{ idr($grandTotal) }}</h5></td>
                         </tr>
                     </tbody>
                 </table>

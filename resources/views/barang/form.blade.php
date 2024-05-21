@@ -41,10 +41,18 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- <div class="mt-3 mb-3 col-md-12">
-                                <label for="nama" class="form-label">Harga</label>
-                                <input type="number" class="form-control" name="harga" id="harga" @if($editMode) value="{{ $barang->harga }}" @endif>
-                            </div> -->
+                            <div class="mt-3 mb-3 col-md-12">
+                                <label for="nama" class="form-label">Satuan</label>
+                                <input type="text" class="form-control" name="satuan" id="satuan" @if($editMode) value="{{ $barang->satuan }}" @endif>
+                            </div>
+                            <div class="mt-3 mb-3 col-md-12">
+                                <label for="nama" class="form-label">Tanggal Kadaluarsa</label>
+                                <input type="text" class="form-control" name="expired" id="expired" @if($editMode) value="{{ $barang->expired }}" @endif>
+                            </div>
+                            <div class="mt-3 mb-3 col-md-12">
+                                <label for="nama" class="form-label">Stok Minimal</label>
+                                <input type="number" class="form-control" name="stok_minimum" id="stok_minimum" @if($editMode) value="{{ $barang->stok_minimum }}" @endif>
+                            </div>
                             <div class="mt-3 mb-3 col-md-12">
                                 <label for="keterangan" class="form-label">Keterangan</label>
                                 <textarea class="form-control" name="keterangan" id="keterangan">@if($editMode) {{ $barang->keterangan }} @endif</textarea>

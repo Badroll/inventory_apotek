@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KontakController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\TransaksiController;
@@ -45,10 +46,19 @@ Route::prefix('barang')->middleware(['validate'])->group(function () {
     Route::delete('delete', [BarangController::class, 'delete'])->middleware(['validate_2']);
 });
 
+Route::prefix('kontak')->middleware(['validate'])->group(function () {
+    Route::get('/', [KontakController::class, 'index']);
+    Route::post('create', [KontakController::class, 'create']);
+    Route::get('form', [KontakController::class, 'form']);
+    Route::put('update', [KontakController::class, 'update']);
+    Route::delete('delete', [KontakController::class, 'delete']);
+});
+
 Route::prefix('transaksi')->middleware(['validate'])->group(function () {
     Route::get('/', [TransaksiController::class, 'index']);
     Route::post('create', [TransaksiController::class, 'create'])->middleware(['validate_2']);
     Route::get('form', [TransaksiController::class, 'form'])->middleware(['validate_2']);
+    Route::get('invoice', [TransaksiController::class, 'downloadInvoice'])->middleware(['validate_2']);
     Route::put('update', [TransaksiController::class, 'update'])->middleware(['validate_2']);
     Route::delete('delete', [TransaksiController::class, 'delete'])->middleware(['validate_2']);
 });

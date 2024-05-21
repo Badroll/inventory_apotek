@@ -24,13 +24,10 @@
                                 <h6 class="fw-semibold mb-0">Kode</h6>
                             </th>
                             <th class="border-bottom-0">
-                                <h6 class="fw-semibold mb-0">Obat</h6>
-                            </th>
-                            <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Tanggal</h6>
                             </th>
                             <th class="border-bottom-0">
-                                <h6 class="fw-semibold mb-0">Jumlah</h6>
+                                <h6 class="fw-semibold mb-0">Item</h6>
                             </th>
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Total</h6>
@@ -48,11 +45,10 @@
                         <tr>
                             <td>{{ $k +1 }}</td>
                             <td><b>#{{ $v->kode }}</b></td>
-                            <td><b>{{ $v->barang_nama }}</b><br>{{ $v->kategori_nama }}</td>
                             <td>{!! str_replace(" ", " ", tglIndo($v->tanggal, "SHORT")) !!}</td>
-                            <td>{{ $v->jumlah }} x {{ idr($v->harga) }}</td>
-                            <td>{{ idr($v->total) }}</td>
-                            <td>{{ $v->mitra }}</td>
+                            <td>{{ count($v->transaksiItem) }} item(s)</td>
+                            <td>{{ idr($v->getTotalHarga()) }}</td>
+                            <td>{{ ($v->mitra->nama) }}</td>
                             <td>
                                 @if(Session::get("user")->role == 2)
                                 <a href="{{ url('transaksi/form') }}?type={{ $type }}&id={{ $v->id }}" class="btn btn-primary" role="button" title="Edit"><i class="glyphicon glyphicon-edit">Edit</i></a>
