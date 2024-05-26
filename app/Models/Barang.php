@@ -26,7 +26,11 @@ class Barang extends Model
     }
 
     public function getStok(){
-        return $this->transaksiItem()->sum('jumlah');
+        $sum = $this->transaksiItem()
+                ->join('transaksi', 'transaksi_item.transaksi_id', '=', 'transaksi.id')
+                ->selectRaw('SUM(CASE WHEN transaksi.jenis = "Pengadaan" THEN transaksi_item.jumlah ELSE -transaksi_item.jumlah END) as stok')
+                ->value('stok');
+        return $sum ? $sum : 0;
     }
 
 }

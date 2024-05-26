@@ -14,10 +14,11 @@ class BarangController extends Controller
 
 
     public function index(Request $request){
-        $barang = DB::select("
-            SELECT A.*, B.nama as kategori_nama FROM barang as A
-            JOIN kategori as B ON A.kategori_id = B.id
-        ", []);
+        // $barang = DB::select("
+        //     SELECT A.*, B.nama as kategori_nama FROM barang as A
+        //     JOIN kategori as B ON A.kategori_id = B.id
+        // ", []);
+        $barang = Barang::all();
 
         $data["barang"] = $barang;
         return view("barang.index", $data);
