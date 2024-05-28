@@ -67,7 +67,7 @@
                         <div class="col-md-4">
                             <div class="mt-3 mb-3 col-md-12">
                                 <label for="barang" class="form-label">Obat</label>
-                                <select class="form-control" id="barang" @if($editMode) style="display:none;" @endif>
+                                <select class="form-control js-example-basic-single" id="barang" @if($editMode) style="display:none;" @endif onchange="toggleForm()">
                                     <option value="_PILIH_">(pilih)</option>
                                     @foreach($ref_barang as $k => $v)
                                         @if((!$typeIn && $v->getStok() == 0))
@@ -153,160 +153,6 @@
                         </div>
                     </div>
                 </form>
-                <script>
-                    var typeIn = "{{ $type }}" === "in"
-                    var strItems = "";
-                    var selectBarang = document.getElementById('barang')
-                    var total = 0;
-
-                    document.getElementById('button_add_item').addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
-                        var selectedOption = selectBarang.selectedOptions[0];
-                        var obat = selectedOption.value;
-                        var obatKet = selectedOption.text;
-                        var obatStok = selectedOption.getAttribute('data-stok');
-                        var obatMinimum = selectedOption.getAttribute('data-minimum');
-
-                        var jumlah = document.getElementById('jumlah').value;
-                        var harga = document.getElementById('harga').value;
-
-                        if(!typeIn){
-                            if(parseInt(jumlah) > parseInt(obatStok)){
-                                alert("Stok tidak cukup, maksimal penjualan adalah " + obatStok)
-                                document.getElementById('jumlah').value = obatStok;
-                                return
-                            }
-
-                            if((parseInt(obatStok) - parseInt(jumlah)) < parseInt(obatMinimum)){
-                                alert(`Peringatan! jumlah penjualan (${jumlah}) akan melewati batas minimal stok (${obatMinimum})`)
-                            }
-                        }
-
-                        var newRow = document.createElement('tr');
-
-                        var obatCell = document.createElement('td');
-                        obatCell.textContent = obatKet;
-                        obatCell.style.width = "20%";
-
-                        var jumlahCell = document.createElement('td');
-                        jumlahCell.textContent = jumlah;
-                        jumlahCell.style.width = "20%";
-                        jumlahCell.style.textAlign = "right";
-                        
-                        var hargaCell = document.createElement('td');
-                        hargaCell.textContent = harga;
-                        hargaCell.style.width = "20%";
-                        hargaCell.style.textAlign = "right";
-
-                        var deleteCell = document.createElement('td');
-                        deleteCell.style.width = "10%";
-                        var deleteButton = document.createElement('a');
-
-                        deleteButton.textContent = 'Hapus';
-                        deleteButton.className = 'btn btn-warning';
-                        deleteButton.href = '#tableMain';
-                        var pattern = obat + "<s>" + obatKet + "<s>" + jumlah + "<s>" + harga + "<n>"
-                        deleteButton.addEventListener('click', function() {
-                            strItems = strItems.replaceAll(pattern, "")
-                            console.log(strItems)
-                            document.getElementById('items').value = strItems
-                            newRow.remove();
-
-                            total -= parseInt(jumlah) * parseInt(harga)
-                            document.getElementById('displayTotal').innerHTML = total
-
-                            // add option
-                            var option = document.createElement('option');
-                            option.value = obat;
-                            option.setAttribute("data-stok", obatStok);
-                            option.textContent = obatKet;
-                            selectBarang.appendChild(option);
-
-                            cekItem()
-                        });
-
-                        deleteCell.appendChild(deleteButton);
-                        newRow.appendChild(obatCell);
-                        newRow.appendChild(jumlahCell);
-                        newRow.appendChild(hargaCell);
-                        newRow.appendChild(deleteCell);
-
-                        var table = document.querySelector('#tableMain tbody');
-                        var lastRow = table.lastElementChild;
-                        table.insertBefore(newRow, lastRow);
-
-                        strItems += pattern
-                        console.log(strItems)
-                        document.getElementById('items').value = strItems
-
-                        total += parseInt(jumlah) * parseInt(harga)
-                        document.getElementById('displayTotal').innerHTML = total
-
-                        // remove option
-                        var optionToRemove = selectBarang.querySelector('option[value="' + obat + '"]');
-                        selectBarang.removeChild(optionToRemove);
-                        document.getElementById('jumlah').value = '';
-                        document.getElementById('harga').value = '';
-                        let selectJumlah = document.getElementById('jumlah')
-                        let selectHarga = document.getElementById('harga')
-                        let btn = document.getElementById('button_add_item')
-                        selectJumlah.style.display = "none"
-                        selectHarga.style.display = "none"
-                        btn.style.display = "none"
-
-                        cekItem()
-                    });
-
-                    selectBarang.addEventListener('change', function(e) {
-                        toggleForm()
-                    });
-
-                    toggleForm()
-                    cekItem()
-
-
-                    function toggleForm(){
-                        var selectedOption = selectBarang.selectedOptions[0];
-                        var obat = selectedOption.value;
-                        var obatKet = selectedOption.text;
-                        var obatStok = selectedOption.getAttribute('data-stok');
-                        var obatMinimum = selectedOption.getAttribute('data-minimum');
-
-                        let selectJumlah = document.getElementById('jumlah')
-                        let selectHarga = document.getElementById('harga')
-                        let btn = document.getElementById('button_add_item')
-
-                        selectJumlah.style.display = "none"
-                        selectHarga.style.display = "none"
-                        btn.style.display = "none"
-
-                        console.log(obat)
-                        if(obat == "_PILIH_"){
-                            return
-                        }
-
-                        if(!typeIn){
-                            if(parseInt(obatStok) < parseInt(obatMinimum)){
-                                alert(`Peringatan! stok obat ini (${obatStok}) kurang dari minimal stok (${obatMinimum})`)
-                            }
-                        }
-
-                        selectJumlah.style.display = "block"
-                        selectHarga.style.display = "block"
-                        btn.style.display = "block"
-                    }
-
-                    function cekItem(){
-                        let btn = document.getElementById('btnSubmit')
-                        if(document.getElementById('items').value == ""){
-                            btn.disabled = true
-                        }else{
-                            btn.disabled = false
-                        }
-                    }
-
-                </script>
             </div>
         </div>
     </div>
@@ -330,6 +176,164 @@
         })
 
         
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2()
+        });
+        
 
     </script>
+
+    
+    <script>
+        var typeIn = "{{ $type }}" === "in"
+        var strItems = "";
+        var selectBarang = document.getElementById('barang')
+        var total = 0;
+
+        document.getElementById('button_add_item').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            var selectedOption = selectBarang.selectedOptions[0];
+            var obat = selectedOption.value;
+            var obatKet = selectedOption.text;
+            var obatStok = selectedOption.getAttribute('data-stok');
+            var obatMinimum = selectedOption.getAttribute('data-minimum');
+
+            var jumlah = document.getElementById('jumlah').value;
+            var harga = document.getElementById('harga').value;
+
+            if(!typeIn){
+                if(parseInt(jumlah) > parseInt(obatStok)){
+                    alert("Stok tidak cukup, maksimal penjualan adalah " + obatStok)
+                    document.getElementById('jumlah').value = obatStok;
+                    return
+                }
+
+                if((parseInt(obatStok) - parseInt(jumlah)) < parseInt(obatMinimum)){
+                    alert(`Peringatan! jumlah penjualan (${jumlah}) akan melewati batas minimal stok (${obatMinimum})`)
+                }
+            }
+
+            var newRow = document.createElement('tr');
+
+            var obatCell = document.createElement('td');
+            obatCell.textContent = obatKet;
+            obatCell.style.width = "20%";
+
+            var jumlahCell = document.createElement('td');
+            jumlahCell.textContent = jumlah;
+            jumlahCell.style.width = "20%";
+            jumlahCell.style.textAlign = "right";
+            
+            var hargaCell = document.createElement('td');
+            hargaCell.textContent = harga;
+            hargaCell.style.width = "20%";
+            hargaCell.style.textAlign = "right";
+
+            var deleteCell = document.createElement('td');
+            deleteCell.style.width = "10%";
+            var deleteButton = document.createElement('a');
+
+            deleteButton.textContent = 'Hapus';
+            deleteButton.className = 'btn btn-warning';
+            deleteButton.href = '#tableMain';
+            var pattern = obat + "<s>" + obatKet + "<s>" + jumlah + "<s>" + harga + "<n>"
+            deleteButton.addEventListener('click', function() {
+                strItems = strItems.replaceAll(pattern, "")
+                console.log(strItems)
+                document.getElementById('items').value = strItems
+                newRow.remove();
+
+                total -= parseInt(jumlah) * parseInt(harga)
+                document.getElementById('displayTotal').innerHTML = total
+
+                // add option
+                var option = document.createElement('option');
+                option.value = obat;
+                option.setAttribute("data-stok", obatStok);
+                option.textContent = obatKet;
+                selectBarang.appendChild(option);
+
+                cekItem()
+            });
+
+            deleteCell.appendChild(deleteButton);
+            newRow.appendChild(obatCell);
+            newRow.appendChild(jumlahCell);
+            newRow.appendChild(hargaCell);
+            newRow.appendChild(deleteCell);
+
+            var table = document.querySelector('#tableMain tbody');
+            var lastRow = table.lastElementChild;
+            table.insertBefore(newRow, lastRow);
+
+            strItems += pattern
+            console.log(strItems)
+            document.getElementById('items').value = strItems
+
+            total += parseInt(jumlah) * parseInt(harga)
+            document.getElementById('displayTotal').innerHTML = total
+
+            // remove option
+            var optionToRemove = selectBarang.querySelector('option[value="' + obat + '"]');
+            selectBarang.removeChild(optionToRemove);
+            document.getElementById('jumlah').value = '';
+            document.getElementById('harga').value = '';
+            let selectJumlah = document.getElementById('jumlah')
+            let selectHarga = document.getElementById('harga')
+            let btn = document.getElementById('button_add_item')
+            selectJumlah.style.display = "none"
+            selectHarga.style.display = "none"
+            btn.style.display = "none"
+
+            cekItem()
+        });
+
+        
+        toggleForm()
+        cekItem()
+
+
+        function toggleForm(){
+            var selectedOption = selectBarang.selectedOptions[0];
+            var obat = selectedOption.value;
+            var obatKet = selectedOption.text;
+            var obatStok = selectedOption.getAttribute('data-stok');
+            var obatMinimum = selectedOption.getAttribute('data-minimum');
+
+            let selectJumlah = document.getElementById('jumlah')
+            let selectHarga = document.getElementById('harga')
+            let btn = document.getElementById('button_add_item')
+
+            selectJumlah.style.display = "none"
+            selectHarga.style.display = "none"
+            btn.style.display = "none"
+
+            console.log(obat)
+            if(obat == "_PILIH_"){
+                return
+            }
+
+            if(!typeIn){
+                if(parseInt(obatStok) < parseInt(obatMinimum)){
+                    alert(`Peringatan! stok obat ini (${obatStok}) kurang dari minimal stok (${obatMinimum})`)
+                }
+            }
+
+            selectJumlah.style.display = "block"
+            selectHarga.style.display = "block"
+            btn.style.display = "block"
+        }
+
+        function cekItem(){
+            let btn = document.getElementById('btnSubmit')
+            if(document.getElementById('items').value == ""){
+                btn.disabled = true
+            }else{
+                btn.disabled = false
+            }
+        }
+
+    </script>
+
 @endsection

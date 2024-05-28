@@ -45,7 +45,7 @@
                             <td>{{ $v->satuan }}</td>
                             <td>{{ tglIndo($v->expired, "SHORT") }}</td>
                             <td>{{ $v->stok_minimum }}</td>
-                            <td>{{ $v->getStok() }}</td>
+                            <td>{{ $v->keterangan }}</td>
                             <td>
                                 @if(Session::get("user")->role == 2)
                                 <a href="{{ url('barang/form?id=' . $v->id) }}" class="btn btn-primary" role="button" title="Edit"><i class="glyphicon glyphicon-edit">Edit</i></a>

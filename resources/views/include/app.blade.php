@@ -6,10 +6,11 @@
 		<title>Inventory Apotek</title>
 		<link rel="shortcut icon" type="image/png" href="{{ asset('assets/src/assets/images/logos/favicon.png') }}" />
 		<link rel="stylesheet" href="{{ asset('assets/src/assets/css/styles.min.css') }}" />
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
+
 	</head>
 	<body>
-		<script src="{{ asset('assets/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
-		<script src="{{ asset('assets/src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 		<div id="wrapper">
 		<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
 			data-sidebar-position="fixed" data-header-position="fixed">
@@ -176,6 +177,8 @@
 		<script src="{{ asset('assets/src/assets/js/sidebarmenu.js') }}"></script>
 		<script src="{{ asset('assets/src/assets/js/app.min.js') }}"></script>
 		<script src="{{ asset('assets/src/assets/libs/simplebar/dist/simplebar.js') }}"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
 		@yield('js')
 	</body>
 </html>
